@@ -1,16 +1,17 @@
 'use strict';
 
-const async = require('async');
-const path = require('path');
-const javaHome = require('locate-java-home');
-const child_process = require('child_process');
 const url = require('url');
 const http = require('http');
+const path = require('path');
 const util = require('util');
 
-const waterfall = async.waterfall;
+const async = require('async');
+const javaHome = require('locate-java-home');
+const child_process = require('child_process');
+
 const apply = async.apply;
 const asyncify = async.asyncify;
+const waterfall = async.waterfall;
 const spawn = child_process.spawn;
 const assign = Object.assign;
 const now = Date.now;

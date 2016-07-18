@@ -22,15 +22,15 @@
     "type": "git",
     "url": "git+https://github.com/adform/node-cc-runner.git"
   },
+  "bugs": {
+    "url": "https://github.com/adform/node-cc-runner/issues"
+  },
+  "homepage": "https://github.com/adform/node-cc-runner#readme",
   "keywords": [
     "closure",
     "compiler",
     "minify"
   ],
-  "bugs": {
-    "url": "https://github.com/adform/node-cc-runner/issues"
-  },
-  "homepage": "https://github.com/adform/node-cc-runner#readme",
   "author": "Adform",
   "license": "ISC"
 }
