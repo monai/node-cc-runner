@@ -11,7 +11,7 @@
     "install": "curl -O -L https://github.com/monai/cc-web-runner/releases/download/v1.0.8/cc-web-runner-standalone-1.0.8.jar"
   },
   "dependencies": {
-    "async": "^1.5.2",
+    "async": "^2.0.0",
     "locate-java-home": "^0.1.5"
   },
   "devDependencies": {},
