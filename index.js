@@ -126,18 +126,23 @@ function service_execute(service, java, callback) {
   debug('execute runner: %s %s', java, service.args.join(' '));
 
   const proc = spawn(java, service.args).once('error', callback);
-  proc.stdout.on('data', read).setEncoding('utf8');
-  proc.stderr.on('data', read).setEncoding('utf8');
+  proc.stdout.on('data', read('stdout')).setEncoding('utf8');
+  proc.stderr.on('data', read('stderr')).setEncoding('utf8');
 
   service.process = proc;
 
-  function read(data) {
-    data = data.trim();
+  function read(title) {
+    return function read_(data) {
+      data = data.trim();
+      if (data) {
+        data.split('\n').forEach(readLine);
+      }
+    };
 
-    if (data) {
-      debug('stdout: %s', data.trim());
+    function readLine(data) {
+      debug('%s: %s', title, data);
 
-      if (data.indexOf('Server:main: Started') >= 0) {
+      if (data.match(/Started @\d+ms$/)) {
         if (service.timeout) {
           debug('service started with timeout %dms', service.timeout);
           service.lastRequest = now();
