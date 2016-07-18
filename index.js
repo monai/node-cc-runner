@@ -17,9 +17,9 @@ const now = Date.now;
 const debug = util.debuglog('cc-runner');
 
 const serviceDefaults = {
-  jar: path.resolve(__dirname, 'cc-web-runner-standalone-1.0.5.jar'),
-  url: 'http://localhost:8081',
-  timeout: 100
+  jar     : path.resolve(__dirname, 'cc-web-runner-standalone-1.0.8.jar'),
+  url     : 'http://127.0.0.1:8081',
+  timeout : 100
 };
 
 const services = {};

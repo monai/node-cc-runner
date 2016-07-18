@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "curl -O -L https://github.com/monai/cc-web-runner/releases/download/v1.0.5/cc-web-runner-standalone-1.0.5.jar"
+    "install": "curl -O -L https://github.com/monai/cc-web-runner/releases/download/v1.0.8/cc-web-runner-standalone-1.0.8.jar"
   },
   "dependencies": {
     "async": "^1.5.2",
