@@ -9,49 +9,80 @@ Client for [Closure Compiler web runner](https://github.com/monai/cc-web-runner)
 ## Usage
 
 ```js
-var runner = require('cc-runner');
-var compiler = runner.create();
+const runner = require('cc-runner');
+const compiler = runner();
 
-compiler.on('listening', () => {
-  compiler.status((error, res) => {
-    console.log(res);
+compiler.start(err => {
+  if (err) {
+    console.error(err.stack);
+    return;
+  }
+
+  compiler.status((err, res) => {
+    console.log(err || res);
   });
 
   compiler.compile({
-    optimizations: {
-      level: "SIMPLE_OPTIMIZATIONS"
-    },
-    sources: [{
+    optimizations: { level: "SIMPLE_OPTIMIZATIONS" },
+    sources: [ {
       fileName: 'bar.js',
       code: '(console.log(function(){return 42-9;}));'
-    }]
-  }, (error, res) => {
-    console.log(res);
+    } ]
+  }, (err, res) => {
+    console.log(err || res);
   });
 });
 ```
 
-## API
 
-### create()
+## Instantiation
 
-Returns compiler instance. Compiler is EventEmitter.
+Runner instance will automatically launch child process on first request (if `jar` option is not `false`) and kill after last response (after `timeout` period).
 
-### compiler
+## Options
 
-#### Event: 'online'
+- `jar` - path to Closure Compiler web runner jar file (default: automatically downloaded `cc-web-runner-standalone-1.0.8.jar`).
+- `url` - Closure Compiler web runner service URL to be used in API calls (default: `http://127.0.0.1:8081/`).
+- `timeout` - timeout since last request after which web service is stopped (default: `100ms`). If `timeout` is `0`, then web service is not stopped automatically.
 
-Emitted when Closure Compiler child process is started.
+```js
+const runner = require('cc-runner');
 
-#### Event: 'listening'
+// Custom Closure Compiler web runner build
+const customCCWJar = runner({
+  jar: '/path/to/cc-web-runner.jar',
+  url: 'http://localhost:9080/'
+});
 
-Emitted when Closure Compiler runner server is listening for connections.
+customCCWJar.status((err, res) => {
+  console.log('Status response from custom build');
+  console.log(res);
+});
 
-#### Event: 'error'
+// If Closure Compiler web runner is not already listening
+// on 8080 port, start and stop methods will fail on this instance.
+// `jar: false` option is useful when Closure Compiler web runner
+// service is managed from outside of Node.js process,
+// e.g. is running on servlet container.
+const clientOnly = runner({
+  jar: false,
+  url: 'http://localhost:8080/'
+});
+```
 
-Forwards all errors.
+## start([callback])
 
-#### compiler.status(options, callback)
+Start Closure Compiler web runner service. Callback is called after the service started to listen for requests.
+
+Callback arguments:
+
+- `error`
+
+## stop([callback])
+
+Stop Closure Compiler web runner service.
+
+## status([options,] callback)
 
 Options:
 
@@ -67,7 +98,7 @@ Callback arguments:
   - `options` Object - is of type [CompilerOptions](https://github.com/google/closure-compiler/blob/v20160208/src/com/google/javascript/jscomp/CompilerOptions.java), compiler options
   - `compilerVersions` String - Closure Compiler version
 
-#### compile.externs(callback)
+## externs(callback)
 
 Callback arguments:
 
@@ -75,7 +106,7 @@ Callback arguments:
 - `object`
   - `externs` Array - is of type List&lt;[SourceFile](https://github.com/google/closure-compiler/blob/master/src/com/google/javascript/jscomp/SourceFile.java)&gt;, array of extern files
 
-#### compiler.compile(data, callback)
+## compile(data, callback)
 
 Data:
 
@@ -97,10 +128,6 @@ Callback arguments:
   - `status` String - SUCCESS|ERROR
   - `message` String - error message if status is 'ERROR'
   - `exception` Object - is of type Throwable, occurred exception
-
-#### compiler.kill()
-
-Kill Closure Compiler child process.
 
 ## License
 
