@@ -37,21 +37,21 @@ compiler.start(err => {
 
 ## Instantiation
 
-Runner instance will automatically launch child process on first request (if `jar` option is not disabled) and kill after last response (with `timeout` option).
+Runner instance will automatically launch child process on first request (if `jar` option is not `false`) and kill after last response (after `timeout` period).
 
-## Factory options
+## Options
 
-- `jar` - path to closure compiler web runner library (default: `./cc-web-runner-standalone-VERSION.jar`)
-- `url` - base portion of url to be used in API calls and port for web server (default: `http://localhost:8080/`)
-- `timeout` - time from last request to stop web server automatically (default: `100`ms)
+- `jar` - path to Closure Compiler web runner jar file (default: automatically downloaded `cc-web-runner-standalone-1.0.8.jar`).
+- `url` - Closure Compiler web runner service URL to be used in API calls (default: `http://127.0.0.1:8081/`).
+- `timeout` - timeout since last request after which web service is stopped (default: `100ms`). If `timeout` is `0`, then web service is not stopped automatically.
 
 ```js
 const runner = require('cc-runner');
 
-// cunstom cc web server build
+// Custom Closure Compiler web runner build
 const customCCWJar = runner({
   jar: '/path/to/cc-web-runner.jar',
-  url: 'http://localhost:9080/' // Base url for API requests
+  url: 'http://localhost:9080/'
 });
 
 customCCWJar.status((err, res) => {
@@ -59,10 +59,11 @@ customCCWJar.status((err, res) => {
   console.log(res);
 });
 
-// start & stop methods fails on this instance
+// If Closure Compiler web runner is not already listening on 8080 port, start and stop methods will fail on this instance.
+// `jar: false` option is useful when Closure Compiler web runner service is managed from outside of Node.js process, e.g. is running on servlet container.
 const clientOnly = runner({
   jar: false,
-  url: 'http://localhost:8080/' // Base url for API requests
+  url: 'http://localhost:8080/'
 });
 
 clientOnly.start(err => {
@@ -70,25 +71,25 @@ clientOnly.start(err => {
 });
 
 const httpService = runner({
-  timeout: 0, // cancel server auto stop
+  timeout: 0, // Don't try to stop service automatically
 });
 
 httpService.start();
 ```
 
-## start([ callback ])
+## start([callback])
 
-Start Closure Compiler child process. Callback is fired after server started to listen for requests.
+Start Closure Compiler web runner service. Callback is called after the service started to listen for requests.
 
 Callback arguments:
 
 - `error`
 
-## stop([ callback ])
+## stop([callback])
 
-Kill Closure Compiler child process.
+Stop Closure Compiler web runner service.
 
-## status([ options, ]callback)
+## status([options,] callback)
 
 Options:
 
