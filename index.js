@@ -167,7 +167,7 @@ function service_execute(service, java, callback) {
     if (service.process) {
       const diff = service.pending ? 0 : (now() - service.lastRequest);
       if (diff >= service.timeout) {
-        debug('Service stopped after timeout %dms >= %dms', diff, service.timeout);
+        debug('service stopped after timeout %dms >= %dms', diff, service.timeout);
         service_stop(service);
       } else {
         setTimeout(timeout, service.timeout - diff);
