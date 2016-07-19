@@ -1,5 +1,7 @@
 # node-cc-runner
 
+[![NPM Version](http://img.shields.io/npm/v/cc-runner.svg)](https://www.npmjs.org/package/cc-runner)
+
 Client for [Closure Compiler web runner](https://github.com/monai/cc-web-runner).
 
 ## Install
