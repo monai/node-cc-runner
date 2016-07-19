@@ -59,22 +59,15 @@ customCCWJar.status((err, res) => {
   console.log(res);
 });
 
-// If Closure Compiler web runner is not already listening on 8080 port, start and stop methods will fail on this instance.
-// `jar: false` option is useful when Closure Compiler web runner service is managed from outside of Node.js process, e.g. is running on servlet container.
+// If Closure Compiler web runner is not already listening
+// on 8080 port, start and stop methods will fail on this instance.
+// `jar: false` option is useful when Closure Compiler web runner
+// service is managed from outside of Node.js process,
+// e.g. is running on servlet container.
 const clientOnly = runner({
   jar: false,
   url: 'http://localhost:8080/'
 });
-
-clientOnly.start(err => {
-  console.error(err.stack);
-});
-
-const httpService = runner({
-  timeout: 0, // Don't try to stop service automatically
-});
-
-httpService.start();
 ```
 
 ## start([callback])
