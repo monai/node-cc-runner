@@ -44,6 +44,8 @@ function create(options) {
       callback || query);
   };
 
+  http.globalAgent.keepAlive = true;
+
   return {
     start: apply(service_start, instance),
     stop: apply(service_stop, instance, Error('User initiated exit')),
